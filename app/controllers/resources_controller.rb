@@ -30,6 +30,12 @@ class ResourcesController < ApplicationController
 		@pdfs = res['resources'].select{|r|r["format"]== 'pdf'}
 		render 'resources/pdfs'
 	end
+	
+	def images
+		res = Cloudinary::Api.resources(resource: 'image', format: 'image', max_results: 500)
+		@images = res['resources'].select{|r| ['jpg', 'png', 'jpeg'].include?(r["format"])}
+		render 'resources/images'
+	end
 
 	private
 	def local_image_path(name)

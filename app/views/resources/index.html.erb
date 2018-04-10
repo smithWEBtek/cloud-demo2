@@ -3,7 +3,8 @@
 </h1>
 
 <% @resources.each do |resource| %>
-	Name: <%= resource["url"].split('/').last %>
-	 URL: <%= resource.secure_url %>
+ 
+	Name: <%= resource["url"].split('/').last.gsub('%20', '') %>
+	URL: <%= resource.secure_url %>
 	 
 <% end %>
