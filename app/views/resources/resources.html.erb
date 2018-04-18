@@ -7,6 +7,9 @@
 	<li>height: <%= res["height"] %></li>
 	<li>url: <%= link_to 'show_image', res["url"] %></li>
 	<li>secure_url: <%= res["secure_url"] %></li>
+	<li><%= link_to 'Delete resource', resources_path(res["public_id"])+'/destroy', resource: res,  method: 'DELETE' %>
+ 
+	</li>
 	<hr />
 	</ul>
 	<% end %>

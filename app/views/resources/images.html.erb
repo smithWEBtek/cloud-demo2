@@ -2,10 +2,6 @@
 	<div class='col-lg-12'>
 	<ul>
 	<% @images.each do |image| %>
-			<strong><li><%= link_to image["secure_url"].split('/').last.gsub('.image', '').gsub('%20', ' '), image["url"] %></li></strong>
-			<li>format: <%= image["format"] %></li>
-			<li>secure_url: <%= image["secure_url"] %></li>
-		<hr />
 		<%= render partial: 'image_box', locals: {upload: image} %>
 		<hr />
 		<% end %>

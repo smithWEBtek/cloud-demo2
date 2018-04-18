@@ -10,21 +10,26 @@ class ResourcesController < ApplicationController
 		render 'resources/new'
 	end
 	
-	def show 
-		
-		render 'show'
-	end
-
 	def new_upload
 		file = params["file"]
-		Cloudinary::Uploader.upload(file, :resource_type => :image,
-		:public_id => params['file'].original_filename,
-		:chunk_size => 6_000_000
+		Cloudinary::Uploader.upload(
+			file, 
+			:resource_type => :image,
+			:public_id => params['file'].original_filename,
+			:chunk_size => 6_000_000
 		)
 		@resource = file
 		redirect_to 'show'
 	end
 	
+	def destroy
+		binding.pry
+		Cloudinary::Api.delete_resources(public_ids: params[:public_id])
+		# DELETE /resources/image/upload?public_ids[]=image1&public_ids[]=image2
+
+		redirect_to '/resources/destroy_confirmation'
+	end
+
 	def pdfs
 		res = Cloudinary::Api.resources(resource: 'image', format: 'pdf', max_results: 500)
 		@pdfs = res['resources'].select{|r|r["format"]== 'pdf'}
@@ -33,7 +38,7 @@ class ResourcesController < ApplicationController
 	
 	def images
 		res = Cloudinary::Api.resources(resource: 'image', format: 'image', max_results: 500)
-		@images = res['resources'].select{|r| ['jpg', 'png', 'jpeg'].include?(r["format"])}
+		@images = res['resources'].select{|r| ['jpg', 'png', 'bmp'].include?(r["format"])}
 		render 'resources/images'
 	end
 
