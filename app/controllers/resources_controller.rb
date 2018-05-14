@@ -23,10 +23,9 @@ class ResourcesController < ApplicationController
 	end
 	
 	def destroy
-		binding.pry
+		# binding.pry
 		Cloudinary::Api.delete_resources(public_ids: params[:public_id])
 		# DELETE /resources/image/upload?public_ids[]=image1&public_ids[]=image2
-
 		redirect_to '/resources/destroy_confirmation'
 	end
 
