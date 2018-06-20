@@ -1,8 +1,7 @@
-<%= form_tag({action: :new_upload, method: :post}, multipart: true) do %>
-	<%= file_field_tag 'file' %>
-	<%= date_field_tag 'date' %>
-	<br>
-	<br>
-	<%= button_tag 'upload' %>
+
+<%= form_for @resource do |f| %>
+	<%= f.label :file %>	
+	<%= f.file_field :file %>	
+	
+	<%= f.submit %>
 <% end %>
- 

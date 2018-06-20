@@ -1,25 +1,48 @@
 class ResourcesController < ApplicationController
+	before_action :set_resource, only: [:show, :update, :destroy]
 
 	def index
+		# binding.pry
+		@resources = Resource.all
+	end
+
+	def cloudinary_index
 		res = Cloudinary::Api.resources(resource: 'image', format: 'pdf', max_results: 500)
 		@resources = res['resources']
 		render 'resources/resources'
 	end
 	
+	def show
+		@resource = Resource.find_by_id(params[:id])
+		redirect_to 'resources/show'
+	end
+	
 	def new 
+		@resource = Resource.new
 		render 'resources/new'
 	end
 	
-	def new_upload
-		file = params["file"]
-		Cloudinary::Uploader.upload(
-			file, 
+	def create
+		file =	Cloudinary::Uploader.upload(
+			params["resource"]["file"], 
+			:public_id => params["resource"]["file"].original_filename,
 			:resource_type => :image,
-			:public_id => params['file'].original_filename,
 			:chunk_size => 6_000_000
-		)
-		@resource = file
-		redirect_to 'show'
+			)
+ 
+			@resource = Resource.new(
+				public_id: file["public_id"].gsub('.pdf', ''), 
+				width: 	file["width"],
+				height: file["height"],
+				format: file["format"],
+				url: file["url"],
+				secure_url: file["secure_url"])
+
+		# if @resource.save
+		# 	redirect_to 'resources/show'
+		# else 
+			redirect_to 'root_path'
+		# end
 	end
 	
 	def destroy
@@ -41,6 +64,14 @@ class ResourcesController < ApplicationController
 	end
 
 	private
+	def set_resource
+		@resource = Resource.find_by_id(params[:id])
+	end
+
+	def resource_params
+		params.require(:resource).permit(:public_id, :width, :height, :format, :url, :secure_url)
+	end
+
 	def local_image_path(name)
 		Rails.root.join('uploads', name).to_s
 	end

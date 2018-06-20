@@ -1,10 +1,8 @@
-<h1>
-  Uploads and Transformations
-</h1>
+<h1>Resources in database</h1>
 
 <% @resources.each do |resource| %>
- 
-	Name: <%= resource["url"].split('/').last.gsub('%20', '') %>
-	URL: <%= resource.secure_url %>
-	 
+	public_id: <%= resource.public_id%>
+	<br>
+	url: <%= resource.secure_url %>
+	<hr> 
 <% end %>

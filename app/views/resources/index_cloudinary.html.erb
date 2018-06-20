@@ -1,0 +1,10 @@
+<h1>
+  Uploads and Transformations
+</h1>
+
+<% @resources.each do |resource| %>
+ 
+	Name: <%= resource["url"].split('/').last.gsub('%20', '') %>
+	URL: <%= resource.secure_url %>
+	 
+<% end %>

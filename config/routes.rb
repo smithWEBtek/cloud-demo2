@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
   # resources :resources, only: [:index, :new, :create, :destroy]
-  resources :resources, only: [:index, :new, :create]
-	root :to => 'resources#index'
-	get '/resources', to: 'resources#index'
+	root to: 'resources#index'
+ 
+	resources :resources, only: [:index, :show, :new, :create]
+
+	get 'cloudinary_index', to: 'resources#cloudinary_index'
+
 	get 'pdfs', to: 'resources#pdfs'
 	get 'images', to: 'resources#images'
 	get 'new', to: 'resources#new'
