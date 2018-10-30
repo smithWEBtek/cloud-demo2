@@ -3,7 +3,12 @@ class ResourcesController < ApplicationController
 
 	def index
 		# binding.pry
+		@resource_count = Resource.load
 		@resources = Resource.all
+	end
+
+	def load_resources
+		redirect_to '/resources'
 	end
 
 	def cloudinary_index
@@ -42,13 +47,20 @@ class ResourcesController < ApplicationController
 		# 	redirect_to 'resources/show'
 		# else 
 			redirect_to 'root_path'
-		# end
+			# end
+		end
+		
+		def destroy
+			Cloudinary::Api.delete_resources(public_ids: params[:public_id])
+			@resource = Resource.find_by_public_id(params["public_id"])
+
+
+# binding.pry
+
+			redirect_to '/confirm_destroy'
 	end
-	
-	def destroy
-		Cloudinary::Api.delete_resources(public_ids: params[:public_id])
-		# DELETE /resources/image/upload?public_ids[]=image1&public_ids[]=image2
-		redirect_to '/resources/destroy_confirmation'
+
+	def confirm_destroy
 	end
 
 	def pdfs

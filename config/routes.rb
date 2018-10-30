@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 	get 'new', to: 'resources#new'
 	post '/new_upload', to: 'resources#new_upload'
 
-	get '/resources/:id/destroy', to: 'resources#destroy'
-	get '/resources/destroy_confirmation', to: 'resources#destroy_confirmation'
+	get 'load_resources', to: 'resources#load_resources'
+ 
+	get '/destroy', to: 'resources#destroy'
+	get '/confirm_destroy', to: 'resources#confirm_destroy'
 end
