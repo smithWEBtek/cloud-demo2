@@ -1,8 +1,11 @@
 <h1>Resources in database</h1>
 
 	<p><%= link_to "Load resources from Cloudinary to local database", load_resources_path %></p>
-	<% if @resource_count %>
-		<p>Resource count: <%= @resource_count %></p>
+	<% if @db_resource_count %>
+		<p>DB Resource count: <%= @db_resource_count %></p>
+	<% end %>
+	<% if @cloud_resource_count %>
+		<p>Cloud Resource count: <%= @cloud_resource_count %></p>
 	<% end %>
 
 <% @resources.each do |resource| %>

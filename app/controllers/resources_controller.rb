@@ -2,9 +2,10 @@ class ResourcesController < ApplicationController
 	before_action :set_resource, only: [:show, :update, :destroy]
 
 	def index
-		# binding.pry
-		@resource_count = Resource.load
-		@resources = Resource.all
+		data = Resource.load
+		@cloud_resource_count = data["cloud_resource_count"]
+		@db_resource_count = data["db_resource_count"]
+		@resources = Resource.all.sort_by{|r| r.public_id}
 	end
 
 	def load_resources
@@ -14,12 +15,9 @@ class ResourcesController < ApplicationController
 	def cloudinary_index
 		res = Cloudinary::Api.resources(resource: 'image', format: 'pdf', max_results: 500)
 		@resources = res['resources']
-		render 'resources/resources'
 	end
 	
 	def show
-		@resource = Resource.find_by_id(params[:id])
-		redirect_to 'resources/show'
 	end
 	
 	def new 
@@ -46,17 +44,14 @@ class ResourcesController < ApplicationController
 		# if @resource.save
 		# 	redirect_to 'resources/show'
 		# else 
-			redirect_to 'root_path'
+			# redirect_to 'root_path'
+			redirect_to 'cloudinary_index_path'
 			# end
 		end
 		
 		def destroy
 			Cloudinary::Api.delete_resources(public_ids: params[:public_id])
 			@resource = Resource.find_by_public_id(params["public_id"])
-
-
-# binding.pry
-
 			redirect_to '/confirm_destroy'
 	end
 
@@ -77,7 +72,7 @@ class ResourcesController < ApplicationController
 
 	private
 	def set_resource
-		@resource = Resource.find_by_id(params[:id])
+		@resource = Resource.find_by_id(params["id"])
 	end
 
 	def resource_params

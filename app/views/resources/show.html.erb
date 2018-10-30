@@ -1,6 +1,11 @@
-	<%= @resource.public_id %>
+	<h2><%= @resource.public_id %></h2>
 	<%= @resource.url %>
 	<%= @resource.secure_url %>
 	<%= @resource.width %>
 	<%= @resource.height %>
 	<%= @resource.format %>
+ 
+
+	<object data=`#{@resource.public_id}` type="application/pdf">
+    <iframe src="https://docs.google.com/viewer?url=<%= `#{@resource.public_id}` %>&embedded=true"></iframe>
+</object>
